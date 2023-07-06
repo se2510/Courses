@@ -67,8 +67,11 @@ console.log(cardArray) // Hecho para ver que si mezclaba el array.
 */
 
 const gridDisplay = document.querySelector('#grid'); // El # indica que se busca el ID de grid en todo el documento HTML
-
 // console.log(gridDisplay); Hecho para ver que puso el div
+const resultDisplay = document.querySelector('#result');
+let cardsChosen = [];
+let cardsChosenIds = [];
+const cardsWon = [];
 
 function createBoard () {
     // Para cada objeto del array se crea un elemento
@@ -87,10 +90,45 @@ function createBoard () {
 
 createBoard();
 
+function checkMatch(){
+    const cards = document.querySelectorAll('img');
+    const optionOneId = cardsChosenIds[0];
+    const optionTwoId = cardsChosenIds[1];
+
+    if(optionOneId == optionTwoId){
+        cards[optionOneId].setAttribute('src', 'images/blank.png');
+        cards[optionTwoId].setAttribute('src', 'images/blank.png');
+        alert('You clicked the same card! xd');
+    }
+
+    if (cardsChosen[0] == cardsChosen[1]){
+        alert('You found a match! :D');
+        cards[optionOneId].setAttribute('src', 'images/white.png');
+        cards[optionTwoId].setAttribute('src', 'images/white.png');
+        // Ahora quitando la posibilidad de darle click a la carta:
+        cards[optionOneId].removeEventListener('click', flipCard);
+        cards[optionTwoId].removeEventListener('click', flipCard);
+        cardsWon.push(cardsChosen);
+    } else {
+        cards[optionOneId].setAttribute('src', 'images/blank.png');
+        cards[optionTwoId].setAttribute('src', 'images/blank.png');
+        alert('Sorry, try again :p');
+    }
+    resultDisplay.textContent = cardsWon.length;
+    cardsChosen = [];
+    cardsChosenIds = [];
+
+    if (cardsWon.length == (cardArray.length/2)){
+        resultDisplay.textContent = 'Congrats!, you found them all C:';
+    }
+}
+
 function flipCard() {
     let cardId = this.getAttribute('data-id');
-    console.log(cardArray[cardId].name)
-    console.log('clicked', cardId);
-
-
+    cardsChosen.push(cardArray[cardId].name);
+    cardsChosenIds.push(cardId);
+    this.setAttribute('src', cardArray[cardId].img);
+    if (cardsChosen.length === 2 ){
+        setTimeout(checkMatch , 500); // Llama a la  funcion checkMatch y luego pausa 500 ms
+    }
 }
