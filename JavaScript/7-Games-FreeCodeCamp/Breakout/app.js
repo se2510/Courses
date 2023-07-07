@@ -125,7 +125,7 @@ function checkForCollitions() {
             (ballCurrentPosition[0] > blocks[i].bottomLeft[0] && ballCurrentPosition[0] < blocks[i].bottomRight[0]) && 
             ((ballCurrentPosition[1] + ballDiameter) > blocks[i].bottomLeft[1] && ballCurrentPosition[1] < blocks[i].topLeft[1])
         ){
-            const allBlocks = Array.from(documents.querySelectorAll('.block'));
+            const allBlocks = Array.from(document.querySelectorAll('.block'));
             allBlocks[i].classList.remove('block');
             blocks.splice(i, 1);
             changeDirection();
@@ -133,7 +133,7 @@ function checkForCollitions() {
             scoreDisplay.textContent = score;
 
             // Check for the win! >:D
-            if (blocks.length === 0 ){
+            if (blocks.length == 0 ){
                 scoreDisplay.textContent = 'You win! uwu';
                 clearInterval(timerId);
                 document.removeEventListener('keydown', move);
